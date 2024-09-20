@@ -15,6 +15,7 @@ import { signInMagicLinkAction } from "./actions";
 import { LoaderButton } from "@/components/loader-button";
 import { useServerAction } from "zsa-react";
 import { useToast } from "@/components/ui/use-toast";
+import { FaMagic } from "react-icons/fa";
 
 const magicLinkSchema = z.object({
   email: z.string().email(),
@@ -66,7 +67,8 @@ export function MagicLinkForm() {
           )}
         />
         <LoaderButton isLoading={isPending} className="w-full" type="submit">
-          Sign in with magic link
+        <FaMagic />
+          Sign in with Magic Link
         </LoaderButton>
       </form>
     </Form>

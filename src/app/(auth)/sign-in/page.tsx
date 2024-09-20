@@ -1,5 +1,6 @@
 "use client";
-
+import { FaGoogle } from "react-icons/fa";
+import { FaMagic } from "react-icons/fa";
 import * as React from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -7,7 +8,7 @@ import { btnStyles } from "@/styles/icons";
 import { Mail } from "lucide-react";
 import Link from "next/link";
 import { MagicLinkForm } from "./magic-link-form";
-
+import { FaGithub } from "react-icons/fa6";
 export default function SignInPage() {
   return (
     <div className="mx-auto flex min-h-[80dvh] items-center justify-center py-24">
@@ -26,9 +27,11 @@ export default function SignInPage() {
                 variant: "secondary",
               }),
               "w-full",
+              "text-base",
             )}
           >
-            <GoogleIcon className="mr-2 h-5 w-5 stroke-white" />
+            <FaGoogle className="mr-2 h-6 w-6 stroke-white"/>
+            {/* <GoogleIcon  /> */}
             Sign in with Google
           </Link>
           <Link
@@ -37,10 +40,12 @@ export default function SignInPage() {
               buttonVariants({
                 variant: "secondary",
               }),
+              "text-base",
               "w-full",
             )}
           >
-            <GithubIcon className="mr-2 h-5 w-5" />
+            <FaGithub className="mr-2 h-6 w-6"/>
+            {/* <GithubIcon  /> */}
             Sign in with GitHub
           </Link>
 
