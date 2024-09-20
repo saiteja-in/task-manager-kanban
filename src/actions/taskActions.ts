@@ -85,17 +85,17 @@ export const editTask = async (task: EditTask) => {
 };
 
 // // Function to delete one or more tasks for the authenticated user
-// export const deleteTask = async (taskIds: number | number[]) => {
-//   const user = await getCurrentUser();
-//   if (!user) {
-//     throw new Error("User not authenticated");
-//   }
+export const deleteTask = async (taskIds: number | number[]) => {
+  const user = await getCurrentUser();
+  if (!user) {
+    throw new Error("User not authenticated");
+  }
 
-//   // Ensure taskIds is an array
-//   const ids = Array.isArray(taskIds) ? taskIds : [taskIds];
+  // Ensure taskIds is an array
+  const ids = Array.isArray(taskIds) ? taskIds : [taskIds];
 
-//   await db
-//     .delete(tasks)
-//     .where(and(eq(tasks.userId, user.id), inArray(tasks.id, ids)));
-//   revalidatePath("/");
-// };
+  await db
+    .delete(tasks)
+    .where(and(eq(tasks.userId, user.id), inArray(tasks.id, ids)));
+  revalidatePath("/");
+};

@@ -12,7 +12,6 @@ import { CalendarDatePicker } from "@/components/calender-date-picker";
 import { useState } from "react";
 import { DataTableViewOptions } from "./data-table-view-options";
 import { TrashIcon } from "lucide-react";
-import { AddTaskDialog } from "@/components/edit-task-dialog";
 import { AddTaskDialog1 } from "@/components/add-task-dialog";
 
 interface DataTableToolbarProps<TData> {
@@ -39,7 +38,7 @@ export function DataTableToolbar<TData>({
     <div className="flex flex-wrap items-center justify-between">
       <div className="flex flex-1 flex-wrap items-center gap-2">
         <Input
-          placeholder="Filter labels..."
+          placeholder="Filter tasks..."
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) => {
             table.getColumn("title")?.setFilterValue(event.target.value);

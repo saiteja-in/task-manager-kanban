@@ -12,6 +12,7 @@ import { getPriorityIcon, getStatusIcon } from "@/app/_lib/utils";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { EditTaskDialog1 } from "@/components/edit-task-dialog";
+import { DeleteTaskDialog } from "@/components/delete-task-dialog";
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -195,8 +196,9 @@ export const columns: ColumnDef<Task>[] = [
     id: "actions",
     cell: ({ row }) => {
       const [showEditTaskDialog,setShowEditTaskDialog]=useState(false)
+      const [showDeleteTaskDialog, setShowDeleteTaskDialog] = useState(false);
        return(
-         <div className="justify-center gap-2">
+         <div className="flex justify-center gap-2">
           <EditTaskDialog1 task={row.original} open={showEditTaskDialog} onOpenChange={setShowEditTaskDialog} />
         <Button
         size={"sm"}
@@ -205,7 +207,21 @@ export const columns: ColumnDef<Task>[] = [
         >
           <FilePenLine className="mr-2 size-4" />Edit
         </Button>
-
+        <DeleteTaskDialog
+            open={showDeleteTaskDialog}
+            onOpenChange={setShowDeleteTaskDialog}
+            showTrigger={false}
+            onSuccess={() => row.toggleSelected(false)}
+            tasks={[row.original]}
+          />
+          <Button
+            size={"sm"}
+            variant="outline"
+            onClick={() => setShowDeleteTaskDialog(true)}
+          >
+            <Trash className="mr-2 size-4 text-red-700" />
+            Delete
+          </Button>
       </div>
       )
     }
