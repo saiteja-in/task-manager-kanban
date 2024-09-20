@@ -60,11 +60,9 @@ export function DeleteTaskDialog({
 
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Are you absolutely sure?</DialogTitle>
+          <DialogTitle>Are you sure?</DialogTitle>
           <DialogDescription>
-            This action cannot be undone. This will permanently delete your{" "}
-            <span className="font-medium">{tasks.length}</span>
-            {tasks.length === 1 ? " task" : " tasks"} from our servers.
+            This action cannot be undone. This will permanently delete the task
           </DialogDescription>
         </DialogHeader>
 
