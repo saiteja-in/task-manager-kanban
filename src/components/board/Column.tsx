@@ -14,6 +14,7 @@ import DropIndicator from "./DropIndicator";
 import AddCard from "./AddCard";
 import TaskCard from "./TaskCard";
 import { updateTaskStatus } from "@/actions/taskActions";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 interface ColumnProps {
   title: string;
@@ -22,7 +23,6 @@ interface ColumnProps {
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
   onDragOver: (e: React.DragEvent) => void;
   onDrop: (e: React.DragEvent) => void;
-  onDragLeave: (e: React.DragEvent) => void;  // Added onDragLeave prop
 }
 
 const Column: React.FC<ColumnProps> = ({
@@ -32,7 +32,6 @@ const Column: React.FC<ColumnProps> = ({
   setTasks,
   onDragOver,
   onDrop,
-  onDragLeave,  // Destructure the onDragLeave prop
 }) => {
   const [active, setActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -130,11 +129,26 @@ const Column: React.FC<ColumnProps> = ({
     return Array.from(document.querySelectorAll(`[data-column="${column}"]`));
   };
 
+  // Modified handleDragLeave to ensure we detect true drag leave
+  const handleDragLeave = (e: React.DragEvent) => {
+    // Check if the drag left the column container
+    const columnContainer = e.currentTarget as HTMLElement;
+    const rect = columnContainer.getBoundingClientRect();
+    const isOutside =
+      e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom;
+
+    // Only clear highlights if the drag has actually left the container
+    if (isOutside) {
+      clearHighlights();
+      setActive(false);
+    }
+  };
+
   const filteredTasks = tasks.filter((task) => task.status === column);
 
   return (
-    <div className="flex flex-col gap-4 w-[300px]">
-      <div className="flex justify-between items-center">
+    <div className="flex flex-col gap-4 w-full max-w-[370px]">
+      <div className="flex justify-center items-center">
         <div className="flex items-center gap-2">
           <h3 className="font-semibold text-lg text-black dark:text-white">{title}</h3>
           <span className="rounded-full flex items-center justify-center text-sm font-medium text-black dark:text-white bg-gray-200 dark:bg-gray-700 w-6 h-6">
@@ -142,35 +156,13 @@ const Column: React.FC<ColumnProps> = ({
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
-          >
-            <PlusCircle size={20} />
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
-              >
-                <MoreHorizontal size={20} />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem className="cursor-pointer">Remove section</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        
       </div>
 
       <div
         onDrop={handleDragEnd}
         onDragOver={handleDragOver}
-        onDragLeave={onDragLeave}  // Use the onDragLeave prop here
+        onDragLeave={handleDragLeave}
         className={`h-full min-h-[500px] w-full overflow-y-auto py-2 px-2.5 flex flex-col gap-2 rounded-lg transition-colors ${
           active ? "bg-gray-100 dark:bg-gray-800" : "bg-gray-50 dark:bg-gray-900"
         }`}

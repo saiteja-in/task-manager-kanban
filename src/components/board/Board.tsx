@@ -17,6 +17,7 @@ const Board: React.FC<BoardProps> = ({ initialTasks }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isDraggingOverDelete, setIsDraggingOverDelete] = useState(false);
 
+  // Fetch tasks on component mount
   useEffect(() => {
     const fetchTasks = async () => {
       setIsLoading(true);
@@ -39,22 +40,27 @@ const Board: React.FC<BoardProps> = ({ initialTasks }) => {
     setIsDraggingOverDelete(false);
 
     if (column === "delete") {
-      try {
-        const taskElement = document.getElementById(`task-${taskId}`);
-        if (taskElement) {
-          taskElement.style.transform = "scale(0)";
-          taskElement.style.transition = "transform 0.2s ease";
-        }
+      if (window.confirm("Are you sure you want to delete this task?")) {
+        try {
+          const taskElement = document.getElementById(`task-${taskId}`);
+          if (taskElement) {
+            // Shrink task before deletion
+            taskElement.style.transform = "scale(0)";
+            taskElement.style.transition = "transform 0.2s ease";
+          }
 
-        setTimeout(async () => {
-          await deleteTask(taskId);
-          setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
-          toast.success("Task deleted successfully");
-          setIsDraggingOverDelete(false); // Ensure the red color is reset after deletion
-        }, 200);
-      } catch (error) {
-        console.error("Failed to delete task:", error);
-        toast.error("Failed to delete task");
+          setTimeout(async () => {
+            await deleteTask(taskId);
+            setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+            toast.success("Task deleted successfully");
+            setIsDraggingOverDelete(false);
+          }, 200);  // Small delay for animation
+        } catch (error) {
+          console.error("Failed to delete task:", error);
+          toast.error("Failed to delete task");
+          setIsDraggingOverDelete(false);
+        }
+      } else {
         setIsDraggingOverDelete(false);
       }
     }
@@ -66,19 +72,22 @@ const Board: React.FC<BoardProps> = ({ initialTasks }) => {
   };
 
   const handleDragLeave = () => {
-    setIsDraggingOverDelete(false); // Reset when drag leaves
+    setIsDraggingOverDelete(false); // Reset dragging over delete
   };
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
-        <LoadingSpinner size={48} />
+        {/* Full-screen loading spinner */}
+        <div className="absolute inset-0 bg-opacity-50 bg-gray-800 flex items-center justify-center z-10">
+          <LoadingSpinner size={48} />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="relative flex h-full overflow-x-auto p-6">
+    <div className="relative flex h-full overflow-x-auto p-6 gap-4">
       <AnimatePresence>
         {columns.map((column) => (
           <motion.div
@@ -87,7 +96,7 @@ const Board: React.FC<BoardProps> = ({ initialTasks }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="flex-shrink-0 w-80 mx-2"
+            className="flex-shrink-0 w-80 mx-4 lg:w-[350px]"  // Adjusted for better responsiveness
           >
             <Column
               title={column
@@ -99,14 +108,15 @@ const Board: React.FC<BoardProps> = ({ initialTasks }) => {
               setTasks={setTasks}
               onDragOver={(e) => handleDragOver(e, column)}
               onDrop={(e) => handleDragEnd(e, column)}
-              onDragLeave={handleDragLeave}
+              // onDragLeave={handleDragLeave}
             />
           </motion.div>
         ))}
       </AnimatePresence>
 
+      {/* Delete Area - Trash Bin */}
       <motion.div
-        className="fixed bottom-10 right-10 h-16 w-16 rounded-full flex items-center justify-center cursor-pointer transition-colors"
+        className="fixed bottom-10 right-10 h-16 w-16 rounded-full flex items-center justify-center cursor-pointer transition-colors shadow-lg"
         onDragOver={(e) => handleDragOver(e, "delete")}
         onDrop={(e) => handleDragEnd(e, "delete")}
         onDragLeave={handleDragLeave}
