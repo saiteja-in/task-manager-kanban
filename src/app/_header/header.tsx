@@ -26,12 +26,9 @@ export async function Header() {
     <div className="border-b py-4">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center gap-8">
-        <Link
-  href="/table"
-  className="flex items-center gap-2 text-2xl font-bold text-primary dark:text-primary-dark transition-transform duration-300 transform hover:scale-105 focus:scale-105"
->
+        <div className="flex items-center gap-2 text-2xl font-bold text-primary dark:text-primary-dark transition-transform duration-300 transform hover:scale-105 focus:scale-105">
   TaskTrackr
-</Link>
+</div>
 
 
           <div className="flex items-center gap-2">
