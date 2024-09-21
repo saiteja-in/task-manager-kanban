@@ -3,6 +3,6 @@ import { redirect } from "next/navigation";
 
 export default async function HomePage() {
   const user = await getCurrentUser();
-  if (user) redirect("/dashboard");
+  if (user) redirect("/table");
   redirect("/sign-in");
 }
