@@ -4,20 +4,12 @@ import fs from 'fs'
 import { DataTable } from './data-table-components/data-table';
 import { columns } from './data-table-components/columns';
 import { getTaskData } from '@/actions/taskActions';
-async function getData() {
-  const filePath = path.join(
-    process.cwd(),
-    "src/app/table/data-table-components",
-    "data.json"
-  );
-  const data = fs.readFileSync(filePath, "utf8");
-  return JSON.parse(data);
-}
+
 const page = async() => {
   // const data = await getData();
   const mainData=await getTaskData();
-  console.log("maindata",mainData)
-  // console.log("data", data);
+  // console.log("maindata",mainData)
+  // console.log("data", mainData);
   return (
     <div className="h-full flex-1 flex-col   md:flex">
     <div className="flex items-center justify-between">
