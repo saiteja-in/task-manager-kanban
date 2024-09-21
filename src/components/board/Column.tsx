@@ -14,7 +14,6 @@ import DropIndicator from "./DropIndicator";
 import AddCard from "./AddCard";
 import TaskCard from "./TaskCard";
 import { updateTaskStatus } from "@/actions/taskActions";
-import LoadingSpinner from "@/components/LoadingSpinner";
 
 interface ColumnProps {
   title: string;
@@ -23,9 +22,18 @@ interface ColumnProps {
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
   onDragOver: (e: React.DragEvent) => void;
   onDrop: (e: React.DragEvent) => void;
+  onDragLeave: (e: React.DragEvent) => void;  // Added onDragLeave prop
 }
 
-const Column: React.FC<ColumnProps> = ({ title, column, tasks, setTasks,onDragOver,onDrop }) => {
+const Column: React.FC<ColumnProps> = ({
+  title,
+  column,
+  tasks,
+  setTasks,
+  onDragOver,
+  onDrop,
+  onDragLeave,  // Destructure the onDragLeave prop
+}) => {
   const [active, setActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -50,7 +58,7 @@ const Column: React.FC<ColumnProps> = ({ title, column, tasks, setTasks,onDragOv
       if (!taskToTransfer) return;
 
       const newStatus = column as "todo" | "in-progress" | "completed";
-      
+
       taskToTransfer = { ...taskToTransfer, status: newStatus };
 
       copy = copy.filter((t) => t.id !== taskId);
@@ -72,7 +80,6 @@ const Column: React.FC<ColumnProps> = ({ title, column, tasks, setTasks,onDragOv
         await updateTaskStatus(taskId, newStatus);
       } catch (error) {
         console.error("Failed to update task status:", error);
-        // You might want to show an error message to the user here
       } finally {
         setIsLoading(false);
       }
@@ -120,14 +127,7 @@ const Column: React.FC<ColumnProps> = ({ title, column, tasks, setTasks,onDragOv
   };
 
   const getIndicators = (): HTMLElement[] => {
-    return Array.from(
-      document.querySelectorAll(`[data-column="${column}"]`)
-    );
-  };
-
-  const handleDragLeave = () => {
-    clearHighlights();
-    setActive(false);
+    return Array.from(document.querySelectorAll(`[data-column="${column}"]`));
   };
 
   const filteredTasks = tasks.filter((task) => task.status === column);
@@ -161,28 +161,22 @@ const Column: React.FC<ColumnProps> = ({ title, column, tasks, setTasks,onDragOv
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem className="cursor-pointer">
-                Remove section
-              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">Remove section</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </div>
+
       <div
         onDrop={handleDragEnd}
         onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
+        onDragLeave={onDragLeave}  // Use the onDragLeave prop here
         className={`h-full min-h-[500px] w-full overflow-y-auto py-2 px-2.5 flex flex-col gap-2 rounded-lg transition-colors ${
           active ? "bg-gray-100 dark:bg-gray-800" : "bg-gray-50 dark:bg-gray-900"
         }`}
       >
         {filteredTasks.map((t) => (
-          <TaskCard
-            key={t.id}
-            task={t}
-            handleDragStart={handleDragStart}
-            setTasks={setTasks}
-          />
+          <TaskCard key={t.id} task={t} handleDragStart={handleDragStart} setTasks={setTasks} />
         ))}
         <DropIndicator beforeId={null} column={column} />
         <AddCard column={column} setTasks={setTasks} />

@@ -13,12 +13,7 @@ interface BoardProps {
 
 const Board: React.FC<BoardProps> = ({ initialTasks }) => {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
-  const [columns, setColumns] = useState<string[]>([
-    "todo",
-    "in-progress",
-    "completed",
-    "delete",
-  ]);
+  const [columns, setColumns] = useState<string[]>(["todo", "in-progress", "completed"]);
   const [isLoading, setIsLoading] = useState(false);
   const [isDraggingOverDelete, setIsDraggingOverDelete] = useState(false);
 
@@ -45,7 +40,6 @@ const Board: React.FC<BoardProps> = ({ initialTasks }) => {
 
     if (column === "delete") {
       try {
-        // Add shrink animation before deleting
         const taskElement = document.getElementById(`task-${taskId}`);
         if (taskElement) {
           taskElement.style.transform = "scale(0)";
@@ -56,17 +50,23 @@ const Board: React.FC<BoardProps> = ({ initialTasks }) => {
           await deleteTask(taskId);
           setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
           toast.success("Task deleted successfully");
-        }, 200); // Delay deletion to allow animation
+          setIsDraggingOverDelete(false); // Ensure the red color is reset after deletion
+        }, 200);
       } catch (error) {
         console.error("Failed to delete task:", error);
         toast.error("Failed to delete task");
+        setIsDraggingOverDelete(false);
       }
     }
   };
 
   const handleDragOver = (e: React.DragEvent, column: string) => {
     e.preventDefault();
-    setIsDraggingOverDelete(column === "delete");
+    if (column === "delete") setIsDraggingOverDelete(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDraggingOverDelete(false); // Reset when drag leaves
   };
 
   if (isLoading) {
@@ -78,7 +78,7 @@ const Board: React.FC<BoardProps> = ({ initialTasks }) => {
   }
 
   return (
-    <div className="flex h-full overflow-x-auto bg-gray-100 dark:bg-gray-900 p-6">
+    <div className="relative flex h-full overflow-x-auto p-6">
       <AnimatePresence>
         {columns.map((column) => (
           <motion.div
@@ -86,58 +86,39 @@ const Board: React.FC<BoardProps> = ({ initialTasks }) => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
             className="flex-shrink-0 w-80 mx-2"
           >
-            {column === "delete" ? (
-              <motion.div
-                onDragOver={(e) => handleDragOver(e, column)}
-                onDrop={(e) => handleDragEnd(e, column)}
-                className={`h-24 w-24 rounded-full flex flex-col items-center justify-center transition-colors ${
-                  isDraggingOverDelete
-                    ? "bg-red-500 dark:bg-red-700"
-                    : "bg-gray-200 dark:bg-gray-800"
-                }`}
-                animate={{
-                  scale: isDraggingOverDelete ? 1.1 : 1,
-                  rotate: isDraggingOverDelete ? 10 : 0,
-                  transition: { duration: 0.2 },
-                }}
-              >
-                <Trash2
-                  size={32}
-                  className={`mb-2 ${
-                    isDraggingOverDelete
-                      ? "text-white"
-                      : "text-gray-500 dark:text-gray-400"
-                  }`}
-                />
-                <span
-                  className={`text-sm font-medium ${
-                    isDraggingOverDelete
-                      ? "text-white"
-                      : "text-gray-500 dark:text-gray-400"
-                  }`}
-                >
-                  Delete
-                </span>
-              </motion.div>
-            ) : (
-              <Column
-                title={column
-                  .split("-")
-                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(" ")}
-                column={column}
-                tasks={tasks}
-                setTasks={setTasks}
-                onDragOver={(e) => handleDragOver(e, column)}
-                onDrop={(e) => handleDragEnd(e, column)}
-              />
-            )}
+            <Column
+              title={column
+                .split("-")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" ")}
+              column={column}
+              tasks={tasks}
+              setTasks={setTasks}
+              onDragOver={(e) => handleDragOver(e, column)}
+              onDrop={(e) => handleDragEnd(e, column)}
+              onDragLeave={handleDragLeave}
+            />
           </motion.div>
         ))}
       </AnimatePresence>
+
+      <motion.div
+        className="fixed bottom-10 right-10 h-16 w-16 rounded-full flex items-center justify-center cursor-pointer transition-colors"
+        onDragOver={(e) => handleDragOver(e, "delete")}
+        onDrop={(e) => handleDragEnd(e, "delete")}
+        onDragLeave={handleDragLeave}
+        animate={{
+          backgroundColor: isDraggingOverDelete ? "rgb(239, 68, 68)" : "rgb(229, 231, 235)",
+        }}
+        transition={{ duration: 0.2 }}
+        role="button"
+        aria-label="Delete Task"
+      >
+        <Trash2 size={32} className={isDraggingOverDelete ? "text-white" : "text-gray-500"} />
+      </motion.div>
     </div>
   );
 };
