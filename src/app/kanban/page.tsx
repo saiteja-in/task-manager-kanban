@@ -1,11 +1,16 @@
-import React from 'react'
+import React from 'react';
+import { getTaskData } from '@/actions/taskActions';
+import CustomKanban from "@/components/board/CustomKanban";
 
-const page = () => {
+const Page = async () => {
+  const mainData = await getTaskData();
+
   return (
-    <div>
-      kanban
+    <div className="max-w-[1440px] mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Kanban Board</h1>
+      <CustomKanban initialTasks={mainData} />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default Page;
