@@ -18,23 +18,18 @@ export function MenuButton() {
       <DropdownMenuContent className="space-y-2">
         <DropdownMenuItem asChild>
           <Link
-            href="/dashboard"
+            href="/table"
             className="flex cursor-pointer items-center gap-2"
           >
-            <UsersIcon className="h-4 w-4" /> Your Groups
+            <UsersIcon className="h-4 w-4" /> Table
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link
-            href="/browse"
+            href="/kanban"
             className="flex cursor-pointer items-center gap-2"
           >
-            <SearchIcon className="h-4 w-4" /> Browse Groups
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/docs" className="flex cursor-pointer items-center gap-2">
-            <BookIcon className="h-4 w-4" /> API Docs
+            <SearchIcon className="h-4 w-4" /> Kanban
           </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>

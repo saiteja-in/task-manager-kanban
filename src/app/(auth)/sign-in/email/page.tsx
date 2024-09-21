@@ -134,10 +134,10 @@ export default function SignInPage() {
           </span>
         </div>
       </div>
-
+<Link href="/sign-up">
       <Button className="w-full" variant={"secondary"}>
-        <Link href="/sign-up">Create an account</Link>
-      </Button>
+        Create an account
+      </Button></Link>
     </div>
   );
 }

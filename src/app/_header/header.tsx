@@ -26,11 +26,13 @@ export async function Header() {
     <div className="border-b py-4">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center gap-8">
-          <Link href="/dashboard" className="flex items-center gap-2 text-xl">
-            {/* <img  src={img2.src} className="w-18 h-12" /> */}
-            <img  src={img1.src} className="w-18 h-12" />
-            {/* <div className="hidden md:block">TASKS</div> */}
-          </Link>
+        <Link
+  href="/table"
+  className="flex items-center gap-2 text-2xl font-bold text-primary dark:text-primary-dark transition-transform duration-300 transform hover:scale-105 focus:scale-105"
+>
+  TaskTrackr
+</Link>
+
 
           <div className="flex items-center gap-2">
             {user && (
@@ -75,6 +77,8 @@ export async function Header() {
 }
 
 async function ProfileAvatar({ userId }: { userId: number }) {
+  const user = await getCurrentUser();
+  if (!user) return null; 
   const profile = await profilerLoader(userId);
   
 

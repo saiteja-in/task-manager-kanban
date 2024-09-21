@@ -60,9 +60,9 @@ export default function SignInPage() {
             </div>
           </div>
 
-          <MagicLinkForm />
+          {/* <MagicLinkForm /> */}
 
-          <div className="relative py-4">
+          {/* <div className="relative py-4">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
             </div>
@@ -71,7 +71,7 @@ export default function SignInPage() {
                 Other options
               </span>
             </div>
-          </div>
+          </div> */}
 
           <div className="flex justify-center">
             <Button asChild variant="ghost" className={cn(btnStyles, "w-full")}>
