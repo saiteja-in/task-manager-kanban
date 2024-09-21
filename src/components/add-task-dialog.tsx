@@ -29,12 +29,13 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { Plus } from "lucide-react";
+import { Plus, PlusCircle, PlusCircleIcon } from "lucide-react";
 import { Textarea } from "./ui/textarea";
 import { addTask } from "@/actions/taskActions";
 import { toast } from "sonner";
 import { useState, useTransition } from "react";
-import { ReloadIcon } from "@radix-ui/react-icons";
+import { PlusIcon, ReloadIcon } from "@radix-ui/react-icons";
+import { FaPlus, FaPlusCircle } from "react-icons/fa";
 
 // Schema for form validation using Zod, based on your task schema
 const formSchema = z.object({
@@ -114,7 +115,7 @@ export function AddTaskDialog1() {
             <Plus className="h-4 w-4" />
           </Button>
           <Button size={"sm"} className="hidden sm:flex">
-            <Plus className="mr-2 h-4 w-4" />
+            <FaPlusCircle className="mr-2 h-4 w-4" />
             Add Task
           </Button>
         </>
