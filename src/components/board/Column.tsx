@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { IoAddOutline } from "react-icons/io5";
-import { BsThreeDots } from "react-icons/bs";
+import { PlusCircle, MoreHorizontal } from "lucide-react";
 import { Task } from "@/db/schema";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,18 +12,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 import DropIndicator from "./DropIndicator";
 import AddCard from "./AddCard";
-import Card from "./Card";
+import TaskCard from "./TaskCard";
 import { updateTaskStatus } from "@/actions/taskActions";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 interface ColumnProps {
   title: string;
   column: string;
   tasks: Task[];
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+  onDragOver: (e: React.DragEvent) => void;
+  onDrop: (e: React.DragEvent) => void;
 }
 
-const Column: React.FC<ColumnProps> = ({ title, column, tasks, setTasks }) => {
+const Column: React.FC<ColumnProps> = ({ title, column, tasks, setTasks,onDragOver,onDrop }) => {
   const [active, setActive] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleDragStart = (e: React.DragEvent, task: Task) => {
     e.dataTransfer.setData("taskId", task.id.toString());
@@ -41,13 +44,13 @@ const Column: React.FC<ColumnProps> = ({ title, column, tasks, setTasks }) => {
     const before = element.dataset.before || "-1";
 
     if (before !== taskId.toString()) {
+      setIsLoading(true);
       let copy = [...tasks];
       let taskToTransfer = copy.find((t) => t.id === taskId);
       if (!taskToTransfer) return;
 
       const newStatus = column as "todo" | "in-progress" | "completed";
       
-      // Update the task status in the local state
       taskToTransfer = { ...taskToTransfer, status: newStatus };
 
       copy = copy.filter((t) => t.id !== taskId);
@@ -65,12 +68,13 @@ const Column: React.FC<ColumnProps> = ({ title, column, tasks, setTasks }) => {
 
       setTasks(copy);
 
-      // Update the task status in the backend
       try {
         await updateTaskStatus(taskId, newStatus);
       } catch (error) {
         console.error("Failed to update task status:", error);
         // You might want to show an error message to the user here
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -129,28 +133,35 @@ const Column: React.FC<ColumnProps> = ({ title, column, tasks, setTasks }) => {
   const filteredTasks = tasks.filter((task) => task.status === column);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 w-[300px]">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <h3 className="font-semibold text-[18px] text-black">{title}</h3>
-          <span className="rounded-full flex items-center justify-center text-[13px] font-medium text-black bg-gray-300 w-[22px] h-[22px]">
+          <h3 className="font-semibold text-lg text-black dark:text-white">{title}</h3>
+          <span className="rounded-full flex items-center justify-center text-sm font-medium text-black dark:text-white bg-gray-200 dark:bg-gray-700 w-6 h-6">
             {filteredTasks.length}
           </span>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <Button
             variant="ghost"
-            className="text-gray-500 h-[20px] p-0 hover:bg-transparent"
+            size="icon"
+            className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
           >
-            <IoAddOutline size={20} />
+            <PlusCircle size={20} />
           </Button>
           <DropdownMenu>
-            <DropdownMenuTrigger className="text-gray-500 hover:text-black">
-              <BsThreeDots />
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+              >
+                <MoreHorizontal size={20} />
+              </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem className="font-medium transition text-black text-[14px] cursor-pointer hover:!bg-[#F9F9F9]">
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem className="cursor-pointer">
                 Remove section
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -161,12 +172,12 @@ const Column: React.FC<ColumnProps> = ({ title, column, tasks, setTasks }) => {
         onDrop={handleDragEnd}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
-        className={`h-full w-[280px] overflow-y-auto max-h-[500px] py-2 px-2.5 flex flex-col gap-1.5 rounded-[12px] transition-colors ${
-          active ? "bg-stone-200/40" : "bg-[#F9F9F9]"
+        className={`h-full min-h-[500px] w-full overflow-y-auto py-2 px-2.5 flex flex-col gap-2 rounded-lg transition-colors ${
+          active ? "bg-gray-100 dark:bg-gray-800" : "bg-gray-50 dark:bg-gray-900"
         }`}
       >
         {filteredTasks.map((t) => (
-          <Card
+          <TaskCard
             key={t.id}
             task={t}
             handleDragStart={handleDragStart}
