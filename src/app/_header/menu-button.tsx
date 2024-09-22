@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { BookIcon, MenuIcon, SearchIcon, UsersIcon } from "lucide-react";
+import { BookIcon, Kanban, MenuIcon, SearchIcon, Table, UsersIcon } from "lucide-react";
 import Link from "next/link";
 
 export function MenuButton() {
@@ -21,7 +21,7 @@ export function MenuButton() {
             href="/table"
             className="flex cursor-pointer items-center gap-2"
           >
-            <UsersIcon className="h-4 w-4" /> Table
+            <Table className="h-4 w-4" /> Table
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
@@ -29,7 +29,7 @@ export function MenuButton() {
             href="/kanban"
             className="flex cursor-pointer items-center gap-2"
           >
-            <SearchIcon className="h-4 w-4" /> Kanban
+            <Kanban className="h-4 w-4" /> Kanban
           </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>

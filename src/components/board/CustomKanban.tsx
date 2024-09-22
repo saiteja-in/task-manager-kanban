@@ -2,7 +2,6 @@
 
 import React from "react";
 import Board from "./Board";
-// import Header from "./Header";
 
 interface CustomKanbanProps {
   initialTasks: any[];
@@ -11,7 +10,6 @@ interface CustomKanbanProps {
 const CustomKanban: React.FC<CustomKanbanProps> = ({ initialTasks }) => {
   return (
     <>
-      {/* <Header /> */}
       <Board initialTasks={initialTasks} />
     </>
   );

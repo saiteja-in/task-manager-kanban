@@ -16,6 +16,7 @@ const page = async() => {
       <p className="text-muted-foreground">
       </p>
     </div>
+    <h1 className="text-2xl font-bold mb-4">Task Table</h1>
     <DataTable data={mainData} columns={columns} />
   </div>
   )

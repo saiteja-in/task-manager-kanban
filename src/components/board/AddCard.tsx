@@ -20,7 +20,7 @@ const AddCard: React.FC<AddCardProps> = ({ column, setTasks }) => {
         className="w-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center"
       >
         <Plus size={20} className="mr-2" />
-        Add a card
+        Add a task
       </Button>
       <AddTaskModal
         isOpen={isModalOpen}

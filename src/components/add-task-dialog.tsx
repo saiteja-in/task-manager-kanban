@@ -37,7 +37,6 @@ import { useState, useTransition } from "react";
 import { PlusIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { FaPlus, FaPlusCircle } from "react-icons/fa";
 
-// Schema for form validation using Zod, based on your task schema
 const formSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }).max(255),
   description: z.string().optional(),
@@ -73,8 +72,8 @@ export function AddTaskDialog1() {
     defaultValues: {
       title: "",
       description: "",
-      status: "todo", // default as per schema
-      priority: "low", // default as per schema
+      status: "todo", 
+      priority: "low", 
     },
   });
 
@@ -82,21 +81,19 @@ export function AddTaskDialog1() {
     setTrans(async () => {
       const formattedValues = {
         ...values,
-        dueDate: values.dueDate ? new Date(values.dueDate) : null, // getTime() returns milliseconds
+        dueDate: values.dueDate ? new Date(values.dueDate) : null, 
       };
 
       try {
-        // Pass the formatted values to addTask function
         await addTask({
           ...formattedValues,
-          // Ensure dueDate is passed as a Date object if available, otherwise null
           dueDate: formattedValues.dueDate
             ? new Date(formattedValues.dueDate)
             : null,
         });
 
-        setOpen(false); // Close the form dialog
-        toast.success("Task added successfully"); // Show success message
+        setOpen(false); 
+        toast.success("Task added successfully"); 
         form.reset();
       } catch (error) {
         toast.error("Task has not been created");
@@ -104,7 +101,6 @@ export function AddTaskDialog1() {
       }
     });
 
-    // Convert dueDate to a timestamp in milliseconds
   }
 
   return (

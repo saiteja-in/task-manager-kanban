@@ -18,6 +18,7 @@ import { MenuButton } from "./menu-button";
 import { UserId } from "@/types";
 import img1 from "../../assets/youseai.png"
 import img2 from "../../assets/youseaiblack.png"
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
 const profilerLoader = cache(getUserProfileUseCase);
 
 export async function Header() {
@@ -36,7 +37,7 @@ export async function Header() {
               <Button
                 variant={"link"}
                 asChild
-                className="flex items-center justify-center gap-2 hover:text-dark"
+                className="hidden md:flex items-center justify-center gap-2 hover:text-dark"
               >
                 <Link href={"/table"} className="text-xl text-light">
                   <Table className="h-5 w-5" /> Table
@@ -47,7 +48,7 @@ export async function Header() {
               <Button
                 variant={"link"}
                 asChild
-                className="flex items-center justify-center gap-2 hover:text-dark"
+                className="hidden md:flex items-center justify-center gap-2 hover:text-dark"
               >
                 <Link href={"/kanban"} className="text-xl text-light">
                   <KanbanSquareIcon className="h-5 w-5" /> Kanban
@@ -55,6 +56,7 @@ export async function Header() {
               </Button>
             )}
           </div>
+          
         </div>
 
         <div className="flex items-center justify-between gap-5">
@@ -78,9 +80,15 @@ async function ProfileAvatar({ userId }: { userId: number }) {
   if (!user) return null; 
   const profile = await profilerLoader(userId);
   
-
   return (
-    <img src={profile?.image ?? ''} alt="Profile Avatar" className="w-10 h-10 rounded-full" />
+  
+      <Avatar>
+        <AvatarImage src={"/next.svg"} />
+        <AvatarFallback>
+          {profile.displayName?.substring(0, 2).toUpperCase() ?? "AA"}
+        </AvatarFallback>
+      </Avatar>
+    
   );
 }
 
@@ -92,7 +100,8 @@ async function HeaderActions() {
     <>
       {isSignedIn ? (
         <>
-          <div className="hidden md:block">
+          {user && <a href="https://github.com/saiteja-in/task-manager-kanban" target="_blank" rel="noopener noreferrer"><GitHubLogoIcon className="h-7 w-7" /></a>}  
+          <div className=" hidden md:block">
             <ModeToggle />
           </div>
           <ProfileDropdown userId={user.id} />

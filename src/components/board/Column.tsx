@@ -1,20 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { PlusCircle, MoreHorizontal } from "lucide-react";
 import { Task } from "@/db/schema";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import DropIndicator from "./DropIndicator";
 import AddCard from "./AddCard";
 import TaskCard from "./TaskCard";
 import { updateTaskStatus } from "@/actions/taskActions";
-import LoadingSpinner from "@/components/LoadingSpinner";
 
 interface ColumnProps {
   title: string;
