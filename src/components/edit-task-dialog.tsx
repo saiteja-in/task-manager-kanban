@@ -121,9 +121,9 @@ export function EditTaskDialog1({task,...props}:EditTaskDialogProps) {
       
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create Task</DialogTitle>
+          <DialogTitle>Edit Task</DialogTitle>
           <DialogDescription>
-            Fill in the details below to create a new task
+            Fill in the details below to edit the task
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
