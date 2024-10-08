@@ -51,8 +51,8 @@ export default function SignInPage() {
   const form = useForm<z.infer<typeof registrationSchema>>({
     resolver: zodResolver(registrationSchema),
     defaultValues: {
-      email: "testaccount@gmail.com", 
-      password: "testaccount123",    
+      email: "", 
+      password: "",    
     },
   });
 

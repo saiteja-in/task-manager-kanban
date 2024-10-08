@@ -19,6 +19,7 @@ import { UserId } from "@/types";
 import img1 from "../../assets/youseai.png"
 import img2 from "../../assets/youseaiblack.png"
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import React from "react";
 const profilerLoader = cache(getUserProfileUseCase);
 
 export async function Header() {
