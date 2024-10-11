@@ -93,7 +93,7 @@ const Board: React.FC<BoardProps> = ({ initialTasks }) => {
       <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
         {/* Full-screen loading spinner */}
         <div className="absolute inset-0 bg-opacity-50 bg-gray-800 flex items-center justify-center z-10">
-          <LoadingSpinner size={48} />
+          <LoadingSpinner  />
         </div>
       </div>
     );
