@@ -101,7 +101,7 @@ async function HeaderActions() {
     <>
       {isSignedIn ? (
         <>
-          {user && <a href="https://github.com/saiteja-in/task-manager-kanban" target="_blank" rel="noopener noreferrer"><GitHubLogoIcon className="h-7 w-7" /></a>}  
+          {user && <a href="https://github.com/saiteja-in" target="_blank" rel="noopener noreferrer"><GitHubLogoIcon className="h-7 w-7" /></a>}  
           <div className=" hidden md:block">
             <ModeToggle />
           </div>
