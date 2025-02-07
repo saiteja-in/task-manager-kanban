@@ -100,7 +100,7 @@ const Board: React.FC<BoardProps> = ({ initialTasks }) => {
   }
 
   return (
-    <div className="relative flex h-full overflow-x-auto p-6 gap-4">
+    <div className="relative flex h-full  overflow-x-auto p-6 gap-4">
       <AnimatePresence>
         {columns.map((column) => (
           <motion.div
