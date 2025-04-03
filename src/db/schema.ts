@@ -104,4 +104,5 @@ export const tasks = sqliteTable("tasks", {
 
 export type User = typeof users.$inferSelect;
 export type Profile = typeof profiles.$inferSelect;
-export type Task = typeof tasks.$inferSelect;
+// export type Task = typeof tasks.$inferSelect;
+export type Session = typeof sessions.$inferSelect;
