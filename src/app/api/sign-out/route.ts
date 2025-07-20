@@ -1,14 +1,7 @@
-import { invalidateSession, validateRequest }  from "@/lib/auth";
+import { NextRequest } from "next/server";
 import { redirect } from "next/navigation";
 
-export async function GET(): Promise<Response> {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  const { session } = await validateRequest();
-  if (!session) {
-    redirect("/sign-in");
-  }
-  await invalidateSession(session.id);
- 
-  redirect("/signed-out");
+export async function POST(request: NextRequest) {
+  // NextAuth.js handles sign out through its own API
+  redirect("/api/auth/signout");
 }

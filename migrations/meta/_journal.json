@@ -1,0 +1,27 @@
+{
+  "version": "6",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1752956382090,
+      "tag": "0000_parallel_harpoon",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1752988683398,
+      "tag": "0001_hard_captain_universe",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1752989448942,
+      "tag": "0002_far_sabra",
+      "breakpoints": true
+    }
+  ]
+}
