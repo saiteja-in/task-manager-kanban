@@ -7,30 +7,30 @@ import { revalidatePath } from "next/cache";
 
 // Ensure required fields are provided when adding a task
 interface NewTask {
-    title: string;                          // Required
-    description?: string;                   // Optional
-    dueDate?: Date | null;                  // Optional, nullable Date
-    status?: "todo" | "in-progress" | "completed";  // Optional, with enum values
-    priority?: "low" | "medium" | "high";   // Optional, with enum values
-    createdAt?: Date;                       // Optional, auto-generated in the database
-    // updatedAt?: Date;                       // Optional, auto-updated in the database
-  }
+  title: string; // Required
+  description?: string; // Optional
+  dueDate?: Date | null; // Optional, nullable Date
+  status?: "todo" | "in-progress" | "completed"; // Optional, with enum values
+  priority?: "low" | "medium" | "high"; // Optional, with enum values
+  createdAt?: Date; // Optional, auto-generated in the database
+  // updatedAt?: Date;                       // Optional, auto-updated in the database
+}
 
-  // export const addTask = async (task: NewTask) => {
-  //   const user = await getCurrentUser();
-  //   if (!user) {
-  //     throw new Error("User not authenticated");
-  //   }
-  
-  //   await db.insert(tasks).values({
-  //     ...task,
-  //     userId: user.id,
-  //     createdAt: new Date(),
-  //     updatedAt: new Date()
-  //   });
-  
-  //   revalidatePath("/");
-  // };
+// export const addTask = async (task: NewTask) => {
+//   const user = await getCurrentUser();
+//   if (!user) {
+//     throw new Error("User not authenticated");
+//   }
+
+//   await db.insert(tasks).values({
+//     ...task,
+//     userId: user.id,
+//     createdAt: new Date(),
+//     updatedAt: new Date()
+//   });
+
+//   revalidatePath("/");
+// };
 
 // Function to add a task for the authenticated user
 export const addTask = async (task: NewTask) => {
@@ -39,16 +39,17 @@ export const addTask = async (task: NewTask) => {
     throw new Error("User not authenticated");
   }
 
-
-  
-  const [newTask]=await db.insert(tasks).values({
-    ...task,
-    userId: user.id,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  }).returning();
-  if(!newTask){
-    throw new Error("Failed to create task")
+  const [newTask] = await db
+    .insert(tasks)
+    .values({
+      ...task,
+      userId: user.id,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    })
+    .returning();
+  if (!newTask) {
+    throw new Error("Failed to create task");
   }
 
   revalidatePath("/");
@@ -68,8 +69,6 @@ export const getTaskData = async () => {
     .orderBy(asc(tasks.id));
   return data;
 };
-
-
 
 interface EditTask extends Partial<NewTask> {
   id: number;
@@ -109,7 +108,6 @@ export const deleteTask = async (taskIds: number | number[]) => {
     .where(and(eq(tasks.userId, user.id), inArray(tasks.id, ids)));
   revalidatePath("/");
 };
-
 
 //kanban board
 export const updateTaskStatus = async (taskId: number, newStatus: string) => {
