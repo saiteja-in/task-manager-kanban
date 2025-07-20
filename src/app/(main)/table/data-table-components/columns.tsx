@@ -85,12 +85,12 @@ export const columns: ColumnDef<Task>[] = [
     ),
     cell: ({ row }) => {
       const status = tasks.status.enumValues.find(
-        (status) => status === row.original.status
-      )
+        (status) => status === row.original.status,
+      );
 
-      if (!status) return null
+      if (!status) return null;
 
-      const Icon = getStatusIcon(status)
+      const Icon = getStatusIcon(status);
 
       return (
         <div className="flex w-[6.25rem] items-center">
@@ -100,10 +100,10 @@ export const columns: ColumnDef<Task>[] = [
           />
           <span className="capitalize">{status}</span>
         </div>
-      )
+      );
     },
     filterFn: (row, id, value) => {
-      return Array.isArray(value) && value.includes(row.getValue(id))
+      return Array.isArray(value) && value.includes(row.getValue(id));
     },
   },
   {
@@ -113,12 +113,12 @@ export const columns: ColumnDef<Task>[] = [
     ),
     cell: ({ row }) => {
       const priority = tasks.priority.enumValues.find(
-        (priority) => priority === row.original.priority
-      )
+        (priority) => priority === row.original.priority,
+      );
 
-      if (!priority) return null
+      if (!priority) return null;
 
-      const Icon = getPriorityIcon(priority)
+      const Icon = getPriorityIcon(priority);
 
       return (
         <div className="flex items-center">
@@ -128,10 +128,10 @@ export const columns: ColumnDef<Task>[] = [
           />
           <span className="capitalize">{priority}</span>
         </div>
-      )
+      );
     },
     filterFn: (row, id, value) => {
-      return Array.isArray(value) && value.includes(row.getValue(id))
+      return Array.isArray(value) && value.includes(row.getValue(id));
     },
   },
   //
@@ -148,7 +148,7 @@ export const columns: ColumnDef<Task>[] = [
         : "Invalid Date";
     },
   },
-  
+
   //
   {
     accessorKey: "dueDate",
@@ -159,7 +159,7 @@ export const columns: ColumnDef<Task>[] = [
       const dueDate = row.getValue("dueDate") as number;
       let formattedDate = "Not set";
       let isValidDate = false;
-  
+
       if (dueDate) {
         const dateValue = new Date(row.getValue("dueDate")); // Convert to milliseconds
         isValidDate = !isNaN(dateValue.getTime());
@@ -173,7 +173,7 @@ export const columns: ColumnDef<Task>[] = [
           formattedDate = "Not set";
         }
       }
-  
+
       return (
         <div className="flex w-[100px] items-center">
           <span
@@ -195,19 +195,24 @@ export const columns: ColumnDef<Task>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const [showEditTaskDialog,setShowEditTaskDialog]=useState(false)
+      const [showEditTaskDialog, setShowEditTaskDialog] = useState(false);
       const [showDeleteTaskDialog, setShowDeleteTaskDialog] = useState(false);
-       return(
-         <div className="flex justify-center gap-2">
-          <EditTaskDialog1 task={row.original} open={showEditTaskDialog} onOpenChange={setShowEditTaskDialog} />
-        <Button
-        size={"sm"}
-        variant="outline"
-        onClick={()=>setShowEditTaskDialog(true)}
-        >
-          <FilePenLine className="mr-2 size-4" />Edit
-        </Button>
-        <DeleteTaskDialog
+      return (
+        <div className="flex justify-center gap-2">
+          <EditTaskDialog1
+            task={row.original}
+            open={showEditTaskDialog}
+            onOpenChange={setShowEditTaskDialog}
+          />
+          <Button
+            size={"sm"}
+            variant="outline"
+            onClick={() => setShowEditTaskDialog(true)}
+          >
+            <FilePenLine className="mr-2 size-4" />
+            Edit
+          </Button>
+          <DeleteTaskDialog
             open={showDeleteTaskDialog}
             onOpenChange={setShowDeleteTaskDialog}
             showTrigger={false}
@@ -222,17 +227,13 @@ export const columns: ColumnDef<Task>[] = [
             <Trash className="mr-2 size-4 text-red-700" />
             Delete
           </Button>
-      </div>
-      )
-    }
-     
-     
-    
+        </div>
+      );
+    },
+
     // <DataTableRowActions row={row} />,
   },
-  
-  
- 
+
   // {
   //   id: "actions",
   //   cell: ({ row }) => {
