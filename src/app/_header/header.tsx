@@ -11,10 +11,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { KanbanSquareIcon, Loader2Icon, LogOut, Table } from "lucide-react";
+import { KanbanSquareIcon, Loader2Icon, Table } from "lucide-react";
 import { ModeToggle } from "./mode-toggle";
 import { MenuButton } from "./menu-button";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import { SignOutButton } from "@/components/sign-out-button";
 import React from "react";
 
 export async function Header() {
@@ -131,12 +132,7 @@ async function ProfileDropdown({ user }: { user: any }) {
       <DropdownMenuContent className="space-y-2">
         <DropdownMenuLabel>{user.name || user.email}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild className="cursor-pointer">
-          <Link className="flex items-center" href={"/api/auth/signout"}>
-            <LogOut className="mr-2 h-4 w-4" />
-            Sign Out
-          </Link>
-        </DropdownMenuItem>
+        <SignOutButton />
       </DropdownMenuContent>
     </DropdownMenu>
   );

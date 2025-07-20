@@ -13,13 +13,13 @@ export default function SignInPage() {
     // Check if user is already signed in
     getSession().then((session) => {
       if (session) {
-        router.push("/dashboard");
+        router.push("/table");
       }
     });
   }, [router]);
 
   const handleGoogleSignIn = () => {
-    signIn("google", { callbackUrl: "/dashboard" });
+    signIn("google", { callbackUrl: "/table" });
   };
 
   return (

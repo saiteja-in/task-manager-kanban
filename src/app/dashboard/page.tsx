@@ -1,7 +1,6 @@
 
 import { getCurrentUser } from "@/lib/session";
 import { redirect } from "next/navigation";
-import { useState } from "react";
 
 export default async function DashboardPage() {
 
