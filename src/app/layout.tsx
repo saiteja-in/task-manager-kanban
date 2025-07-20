@@ -113,8 +113,7 @@ export default async function RootLayout({
       >
         <Providers>
           <NextTopLoader />
-          <Header />
-          <div className="">{children}</div>
+          <div className=" ">{children}</div>
         </Providers>
         <Toaster />
         <SonnerToaster />
