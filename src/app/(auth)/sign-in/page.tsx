@@ -23,7 +23,7 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="mx-auto flex min-h-[80dvh] items-center justify-center py-24">
+    <div className="mx-auto flex h-screen items-center justify-center">
       <div className="mx-auto max-w-md space-y-6">
         <div className="space-y-2 text-center">
           <h1 className="text-3xl font-bold">Sign In</h1>

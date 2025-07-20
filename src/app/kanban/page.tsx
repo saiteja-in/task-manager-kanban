@@ -1,8 +1,13 @@
 import React from 'react';
 import { getTaskData } from '@/actions/taskActions';
 import CustomKanban from "@/components/board/CustomKanban";
+import { getCurrentUser } from "@/lib/session";
+import { redirect } from "next/navigation";
 
 const Page = async () => {
+  const user = await getCurrentUser();
+  if (!user) redirect("/sign-in");
+  
   const mainData = await getTaskData();
 
   return (

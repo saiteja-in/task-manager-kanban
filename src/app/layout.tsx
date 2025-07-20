@@ -114,7 +114,7 @@ export default async function RootLayout({
         <Providers>
           <NextTopLoader />
           <Header />
-          <div className="container mx-auto w-full py-12">{children}</div>
+          <div className="">{children}</div>
         </Providers>
         <Toaster />
         <SonnerToaster />
